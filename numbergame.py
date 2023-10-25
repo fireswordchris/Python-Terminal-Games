@@ -23,6 +23,8 @@ def main():
         else:
             print("Not a valid number")
 
+    print("The number was " + str(num) + "!")
+    
     again = input("Play again? ").lower()
 
     if (again == "yes"):
