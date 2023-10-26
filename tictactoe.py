@@ -1,16 +1,59 @@
+import main as m
+import random
+
 def main():
 
-    mode = input("1 Player or 2 Player? ").lower()
+    mode = input("1 Player or 2 Player? (or quit) ").lower()
 
     if (mode == "1 player"):
         onePlayer()
 
     elif (mode == "2 player"):
         twoPlayer()
+        
+    elif (mode == "quit"):
+        m.main()
+        
+    else:
+        print("Not a valid choice please try again")
+        main()
 
 def onePlayer():
-    print("Not avaliable")
-    main()
+    board = [0,0,0,0,0,0,0,0,0]
+    won = False
+    translateBoard(board)
+    
+    while won == False:
+        board = computerChoice(1,board)
+        won = checkWin(board, 1)
+        translateBoard(board)
+        if (won):
+            break
+        
+        board = translateChoice(2,board)
+        won = checkWin(board,2)
+        translateBoard(board)
+        if (won):
+            break
+        
+    again = input("Play again? ").lower()
+    
+    if (again == "yes" or again == "y" or again == "ye" or again == "yeah"):
+        onePlayer()
+        
+    else:
+        main()
+        
+def computerChoice(n, board):
+    validMove = False
+    
+    while not validMove:
+        move = random.randint(0,8)
+        
+        if (not checkTaken(board,move)):
+            board[move] = n
+            validMove = True
+            return board
 
 def twoPlayer():
     board = [0,0,0,0,0,0,0,0,0]
@@ -32,11 +75,11 @@ def twoPlayer():
 
     again = input("Play again? ").lower()
 
-    if (again == "yes"):
-        main()
+    if (again == "yes" or again == "y" or again == "ye" or again == "yeah"):
+        twoPlayer()
 
     else:
-        pass
+        main()
     
 def translateBoard(board):
     i = 0
@@ -58,85 +101,53 @@ def translateBoard(board):
 
     print(translated)
 
-def translateChoice(playerNum, board):
-    choice = input("Player " + str(playerNum) + "'s move (tl,tm,tr,ml,mm,mr,bl,bm,br): ").lower()
+def translateChoice(pNum, board):
+    choice = input("Player " + str(pNum) + "'s move (tl,tm,tr,ml,mm,mr,bl,bm,br): ").lower()
 
-    if (playerNum == 1):
-        if (choice == "tl"):
-            board[0] = 1
-            return board
+    if (choice == "tl" and not checkTaken(board, 0)):
+        board[0] = pNum
+        return board
 
-        elif (choice == "tm"):
-            board[1] = 1
-            return board
+    elif (choice == "tm" and not checkTaken(board, 1)):
+        board[1] = pNum
+        return board
 
-        elif (choice == "tr"):
-            board[2] = 1
-            return board
+    elif (choice == "tr" and not checkTaken(board, 2)):
+        board[2] = pNum
+        return board
 
-        elif (choice == "ml"):
-            board[3] = 1
-            return board
+    elif (choice == "ml" and not checkTaken(board, 3)):
+        board[3] = pNum
+        return board
 
-        elif (choice == "mm"):
-            board[4] = 1
-            return board
+    elif (choice == "mm" and not checkTaken(board, 4)):
+        board[4] = pNum
+        return board
 
-        elif (choice == "mr"):
-            board[5] = 1
-            return board
+    elif (choice == "mr" and not checkTaken(board, 5)):
+        board[5] = pNum
+        return board
 
-        elif (choice == "bl"):
-            board[6] = 1
-            return board
+    elif (choice == "bl" and not checkTaken(board, 6)):
+        board[6] = pNum
+        return board
 
-        elif (choice == "bm"):
-            board[7] = 1
-            return board
+    elif (choice == "bm" and not checkTaken(board, 7)):
+        board[7] = pNum
+        return board
 
-        elif (choice == "br"):
-            board[8] = 1
-            return board
-
-    elif (playerNum == 2):
-        if (choice == "tl"):
-            board[0] = 2
-            return board
-
-        elif (choice == "tm"):
-            board[1] = 2
-            return board
-
-        elif (choice == "tr"):
-            board[2] = 2
-            return board
-
-        elif (choice == "ml"):
-            board[3] = 2
-            return board
-
-        elif (choice == "mm"):
-            board[4] = 2
-            return board
-
-        elif (choice == "mr"):
-            board[5] = 2
-            return board
-
-        elif (choice == "bl"):
-            board[6] = 2
-            return board
-
-        elif (choice == "bm"):
-            board[7] = 2
-            return board
-
-        elif (choice == "br"):
-            board[8] = 2
-            return board
+    elif (choice == "br" and not checkTaken(board, 8)):
+        board[8] = pNum
+        return board
 
     print("Not a valid space, please try again.")
-    return translateChoice(playerNum, board)
+    return translateChoice(pNum, board)
+
+def checkTaken(board, num):
+    if (board[num] == 0):
+        return False
+    else:
+        return True
 
 def checkWin(board, pNum):
     spNum = str(pNum)

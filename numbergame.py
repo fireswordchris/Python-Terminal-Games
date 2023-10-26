@@ -1,4 +1,5 @@
 import random
+import main as m
 
 def main():
     num = random.randint(1,10)
@@ -27,11 +28,11 @@ def main():
     
     again = input("Play again? ").lower()
 
-    if (again == "yes"):
+    if (again == "yes" or again == "y" or again == "ye" or again == "yeah"):
         main()
 
     else:
-        pass
+        m.main()
 
 
 if __name__ == "__main__":
